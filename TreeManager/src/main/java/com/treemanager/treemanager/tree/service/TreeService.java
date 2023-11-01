@@ -18,14 +18,17 @@ public class TreeService {
     public List<TreeNodeDTO> getTreesHierarchy() {
         return treeNodeRepository.findRoots()
                 .stream()
-                .map(this::mapToHierarchyDTO)
+                .map(root -> mapToHierarchyDTO(root, 0L))
                 .toList();
     }
     
-    private TreeNodeDTO mapToHierarchyDTO(TreeNode treeNode) {
+    private TreeNodeDTO mapToHierarchyDTO(TreeNode treeNode, Long accumulatedLeafSum) {
+        if (treeNode.isLeaf()) {
+            return TreeNodeMapper.toLeafSimpleDTO(treeNode, accumulatedLeafSum);
+        }
         List<TreeNodeDTO> childrenWithHierarchy = treeNode.getChildren()
                 .stream()
-                .map(this::mapToHierarchyDTO)
+                .map(child -> mapToHierarchyDTO(child, accumulatedLeafSum + treeNode.getNodeValue()))
                 .toList();
         return TreeNodeMapper.toHierarchyDTO(treeNode, childrenWithHierarchy);
     }

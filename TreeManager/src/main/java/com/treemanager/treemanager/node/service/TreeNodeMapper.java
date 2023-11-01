@@ -20,7 +20,18 @@ public class TreeNodeMapper {
                 .ifPresent(parent -> builder.parentId(parent.getId()));
         return builder.build();
     }
-
+    
+    public static TreeNodeDTO toLeafSimpleDTO(TreeNode treeNode, Long leafSum) {
+        TreeNodeDTO.TreeNodeDTOBuilder builder = TreeNodeDTO.builder()
+                .id(treeNode.getId())
+                .nodeValue(treeNode.getNodeValue())
+                .leafSum(leafSum)
+                .isLeaf(treeNode.isLeaf());
+        Optional.ofNullable(treeNode.getParent())
+                .ifPresent(parent -> builder.parentId(parent.getId()));
+        return builder.build();
+    }
+    
     public static TreeNodeDTO toHierarchyDTO(TreeNode treeNode, List<TreeNodeDTO> children) {
         TreeNodeDTO.TreeNodeDTOBuilder builder = TreeNodeDTO.builder()
                 .id(treeNode.getId())

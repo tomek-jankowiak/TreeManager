@@ -1,11 +1,14 @@
 package com.treemanager.treemanager.node.api.controller;
 
+import com.treemanager.treemanager.node.api.entity.TreeNodeDTO;
 import com.treemanager.treemanager.node.api.entity.TreeNodeOperationResultDTO;
 import com.treemanager.treemanager.node.service.TreeNodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +28,12 @@ public class TreeNodeController {
     @PostMapping("/create/{parent-id}/child")
     public ResponseEntity<TreeNodeOperationResultDTO> createChild(@PathVariable("parent-id") Long parentId) {
         TreeNodeOperationResultDTO operationResultDTO = treeNodeService.createChildNode(parentId);
+        return ResponseEntity.ok(operationResultDTO);
+    }
+    
+    @PutMapping("/update")
+    public ResponseEntity<TreeNodeOperationResultDTO> updateNode(@RequestBody TreeNodeDTO treeNodeDTO) {
+        TreeNodeOperationResultDTO operationResultDTO = treeNodeService.updateNode(treeNodeDTO);
         return ResponseEntity.ok(operationResultDTO);
     }
 }

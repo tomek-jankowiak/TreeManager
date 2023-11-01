@@ -9,6 +9,7 @@ import lombok.Builder;
 public record TreeNodeDTO(Long id,
                           @JsonProperty("node_value") Long nodeValue,
                           @JsonProperty("is_leaf") boolean isLeaf,
+                          @JsonProperty("leaf_sum") Long leafSum,
                           @JsonProperty("parent_id") Long parentId,
                           List<TreeNodeDTO> children) {
     
