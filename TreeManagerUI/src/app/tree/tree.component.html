@@ -1,0 +1,10 @@
+<div class="card flex justify-content-center">
+  <p-organizationChart [value]="rootNodes">
+    <ng-template let-node pTemplate="default">
+      <div class="p-2 text-center node-content">
+        <div class="font-bold" >{{ node.label }}</div>
+      </div>
+    </ng-template>
+  </p-organizationChart>
+</div>
+
