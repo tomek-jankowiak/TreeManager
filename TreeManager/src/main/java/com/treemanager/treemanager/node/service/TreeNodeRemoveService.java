@@ -2,6 +2,7 @@ package com.treemanager.treemanager.node.service;
 
 import java.util.Optional;
 
+import com.treemanager.treemanager.node.api.entity.TreeNodeDeleteResultDTO;
 import com.treemanager.treemanager.node.api.entity.TreeNodeOperationResultDTO;
 import com.treemanager.treemanager.node.domain.model.TreeNode;
 import com.treemanager.treemanager.node.domain.model.TreeNodeRepository;
@@ -24,16 +25,22 @@ public class TreeNodeRemoveService {
     
     private TreeNodeOperationResultDTO removeNode(TreeNode nodeToRemove) {
         TreeNodeOperationResultDTO.Builder resultBuilder = TreeNodeOperationResultDTO.builder();
-        findRemovedDescendants(nodeToRemove, resultBuilder);
+        TreeNodeDeleteResultDTO.Builder deleteResultBuilder = TreeNodeDeleteResultDTO.builder()
+                        .deletedNode(TreeNodeMapper.toSimpleDTO(nodeToRemove));
+        findRemovedDescendants(nodeToRemove, deleteResultBuilder);
         checkAndUpdateParent(nodeToRemove, resultBuilder);
         treeNodeRepository.delete(nodeToRemove);
-        return resultBuilder.build();
+        return resultBuilder
+                .deletedNodes(deleteResultBuilder.build())
+                .build();
     }
     
-    private void findRemovedDescendants(TreeNode nodeToRemove, TreeNodeOperationResultDTO.Builder resultBuilder) {
-        resultBuilder.deletedNode(TreeNodeMapper.toSimpleDTO(nodeToRemove));
+    private void findRemovedDescendants(TreeNode nodeToRemove, TreeNodeDeleteResultDTO.Builder deleteResultBuilder) {
         nodeToRemove.getChildren()
-                .forEach(child -> findRemovedDescendants(child, resultBuilder));
+                .forEach(child -> {
+                    deleteResultBuilder.deletedDescendant(TreeNodeMapper.toSimpleDTO(child));
+                    findRemovedDescendants(child, deleteResultBuilder);
+                });
     }
     
     private void checkAndUpdateParent(TreeNode nodeToRemove, TreeNodeOperationResultDTO.Builder resultBuilder) {
