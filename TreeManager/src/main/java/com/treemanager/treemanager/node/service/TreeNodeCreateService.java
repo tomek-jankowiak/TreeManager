@@ -19,7 +19,7 @@ public class TreeNodeCreateService {
     
     public TreeNodeOperationResultDTO createRootNode() {
         TreeNode newRoot = treeNodeRepository.save(buildLeafNode());
-        TreeNodeDTO treeNodeDTO = TreeNodeMapper.toSimpleDTO(newRoot);
+        TreeNodeDTO treeNodeDTO = TreeNodeMapper.toLeafSimpleDTO(newRoot, DEFAULT_LEAF_VALUE);
         return TreeNodeOperationResultDTO.builder()
                 .createdNode(treeNodeDTO)
                 .build();
