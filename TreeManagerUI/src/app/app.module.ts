@@ -9,12 +9,15 @@ import { HttpClientModule } from "@angular/common/http";
 import {OrganizationChartModule} from "primeng/organizationchart";
 import {ButtonModule} from "primeng/button";
 import {PanelModule} from "primeng/panel";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {SidebarModule} from "primeng/sidebar";
+import { NodeComponent } from './node/node.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TreeComponent
+    TreeComponent,
+    NodeComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,9 @@ import {FormsModule} from "@angular/forms";
     OrganizationChartModule,
     PanelModule,
     ButtonModule,
-    FormsModule
+    FormsModule,
+    SidebarModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

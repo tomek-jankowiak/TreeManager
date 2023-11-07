@@ -1,7 +1,7 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TreeNodeData} from "./tree-node-data.model";
-import {TreeService} from "./tree.service";
 import {TreeNode} from 'primeng/api';
+import {TreeStateService} from "./tree-state.service";
 
 @Component({
   selector: 'app-tree',
@@ -10,14 +10,17 @@ import {TreeNode} from 'primeng/api';
 })
 export class TreeComponent implements OnInit {
 
-  @Input() rootNodes!: TreeNode[];
+  constructor(private treeStateService: TreeStateService) {}
 
-  constructor(private treeService: TreeService) {}
+  getNodes(): TreeNode<TreeNodeData>[] {
+    return this.treeStateService.getRootNodes()
+  }
 
   ngOnInit() {
-    this.treeService.getTree()
-      .subscribe((treeData: TreeNodeData[]) => {
-        this.rootNodes = treeData.map(treeNodeData => this.treeService.mapDataToTreeNode(treeNodeData))
-      });
+    this.treeStateService.initTreeData()
+  }
+
+  addRootNode(): void {
+    this.treeStateService.addRootNode()
   }
 }

@@ -1,0 +1,31 @@
+<div class="p-2 text-center node-content">
+  <div class="p-2">id: {{treeNode.data?.id}}</div>
+  <div class="font-bold" >{{ treeNode.label }}</div>
+</div>
+<p-button icon="pi pi-plus" severity="success" [rounded]="true" [outlined]="true" (click)="addChildNode(treeNode)"></p-button>
+<p-button icon="pi pi-bars" severity="info" [rounded]="true" [outlined]="true" (click)="editSidebarVisible = true"></p-button>
+<p-button icon="pi pi-times" severity="danger" [rounded]="true" [outlined]="true" (click)="removeNode(treeNode)"></p-button>
+<p-sidebar [(visible)]="editSidebarVisible">
+  <h3>Node {{treeNode.data?.id}} information</h3>
+  <form [formGroup]="nodeInfoForm" (ngSubmit)="editNode()">
+    <div>
+      <label for="id-label">ID:</label>
+      <input type="number" id="id-label" formControlName="id">
+    </div>
+    <div>
+      <label for="leaf-label">Is Leaf:</label>
+      <input type="text" id="leaf-label" formControlName="isLeaf">
+    </div>
+    <div>
+      <label for="value-label">Node Value:</label>
+      <input type="number" id="value-label" formControlName="nodeValue">
+    </div>
+    <div>
+      <label for="parent-id-label">Parent ID:</label>
+      <select formControlName="parentId" id="parent-id-label">
+        <option [value]="parentId" *ngFor="let parentId of getPossibleParentIds()">{{ parentId }}</option>
+      </select>
+    </div>
+    <p-button label="Save" [rounded]="true" type="submit"></p-button>
+  </form>
+</p-sidebar>
